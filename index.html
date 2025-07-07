@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AffairED - تجربة فتح الموقع</title>
-    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
     <style>
         body {
@@ -32,19 +31,18 @@
         
         .logo-container {
             margin-bottom: 3rem;
-            height: 80px;
             display: flex;
-            align-items: center;
+            justify-content: center;
+            max-width: 90%;
         }
         
-        .logo {
-            font-size: 3.5rem;
-            font-weight: 700;
-            background: linear-gradient(90deg, #00dbde 0%, #fc00ff 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            font-family: 'Arial Black', sans-serif;
+        .logo-img {
+            max-width: 400px;
+            width: 100%;
+            height: auto;
+            opacity: 0;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
         
         .keyhole-container {
@@ -54,6 +52,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            margin-top: 30px;
         }
         
         .keyhole {
@@ -77,10 +76,11 @@
         }
         
         .key {
+            width: 100px;
+            height: auto;
             position: absolute;
-            width: 60px;
-            transform: translateY(-150px) rotate(0deg);
-            transition: all 0.5s;
+            transform: translateY(-150px);
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5));
             z-index: 10;
         }
         
@@ -113,30 +113,16 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
-        
-        /* تأثير دوران المفتاح */
-        @keyframes keyTurn {
-            0% { transform: translateY(0) rotate(0deg); }
-            30% { transform: translateY(50px) rotate(0deg); }
-            70% { transform: translateY(50px) rotate(90deg); }
-            100% { transform: translateY(50px) rotate(90deg); }
-        }
-        
-        /* تأثير فتح القفل */
-        @keyframes unlock {
-            0% { opacity: 1; }
-            100% { opacity: 0; transform: scale(1.2); }
-        }
     </style>
 </head>
 <body>
     <div class="intro-screen">
         <button class="skip-intro">تخطي المقدمة</button>
         <div class="logo-container">
-            <div class="logo" id="typed-logo"></div>
+            <img src="IMG-20250707-WA0014.jpg" class="logo-img" id="logo-image">
         </div>
         <div class="keyhole-container">
-            <img src="https://i.imgur.com/JnQ9JFy.png" class="key" alt="Key">
+            <img src="IMG-20250707-WA0015(1).jpg" class="key" alt="مفتاح">
             <div class="keyhole"></div>
         </div>
     </div>
@@ -158,35 +144,34 @@
     </main>
 
     <script>
-        // Typewriter Effect for Logo
-        const typed = new Typed('#typed-logo', {
-            strings: ["AffairED"],
-            typeSpeed: 150,
-            showCursor: true,
-            cursorChar: '|',
+        // ظهور الصورة التدريجي
+        gsap.to("#logo-image", {
+            opacity: 1,
+            duration: 2,
             onComplete: startKeyAnimation
         });
 
-        // Key Unlock Animation
+        // حركة المفتاح
         function startKeyAnimation() {
-            // حركة نزول المفتاح
             gsap.to(".key", {
                 y: 50,
                 duration: 1.5,
                 ease: "bounce.out",
-                onComplete: () => {
-                    // دوران المفتاح
-                    gsap.to(".key", {
-                        rotation: 90,
-                        duration: 0.8,
-                        ease: "power2.inOut",
-                        onComplete: unlockDoor
-                    });
-                }
+                onComplete: rotateKey
             });
         }
 
-        // تأثير فتح القفل
+        // دوران المفتاح
+        function rotateKey() {
+            gsap.to(".key", {
+                rotation: 90,
+                duration: 0.8,
+                ease: "power2.inOut",
+                onComplete: unlockDoor
+            });
+        }
+
+        // فتح القفل
         function unlockDoor() {
             // اهتزاز القفل
             gsap.to(".keyhole", {
@@ -200,12 +185,6 @@
             // توهج القفل
             gsap.to(".keyhole", {
                 borderColor: "rgba(0, 219, 222, 0.8)",
-                duration: 0.5
-            });
-            
-            // توهج المفتاح
-            gsap.to(".key", {
-                filter: "drop-shadow(0 0 10px rgba(252, 0, 255, 0.8))",
                 duration: 0.5
             });
         }
@@ -222,7 +201,7 @@
             });
         }
 
-        // زر تخطي المقدمة
+        // زر التخطي
         document.querySelector(".skip-intro").addEventListener("click", showWebsite);
     </script>
 </body>
