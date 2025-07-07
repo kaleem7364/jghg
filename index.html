@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AffairED - تجربة فتح الموقع</title>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f0f1a;
+            overflow: hidden;
+            color: white;
+        }
+        
+        .intro-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            z-index: 1000;
+        }
+        
+        .logo-container {
+            margin-bottom: 3rem;
+            height: 80px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #00dbde 0%, #fc00ff 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-family: 'Arial Black', sans-serif;
+        }
+        
+        .keyhole-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .keyhole {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+        }
+        
+        .keyhole::after {
+            content: '';
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 0 0 5px 5px;
+        }
+        
+        .key {
+            position: absolute;
+            width: 60px;
+            transform: translateY(-150px) rotate(0deg);
+            transition: all 0.5s;
+            z-index: 10;
+        }
+        
+        .website-content {
+            display: none;
+            padding: 2rem;
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        .skip-intro {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .skip-intro:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* تأثير دوران المفتاح */
+        @keyframes keyTurn {
+            0% { transform: translateY(0) rotate(0deg); }
+            30% { transform: translateY(50px) rotate(0deg); }
+            70% { transform: translateY(50px) rotate(90deg); }
+            100% { transform: translateY(50px) rotate(90deg); }
+        }
+        
+        /* تأثير فتح القفل */
+        @keyframes unlock {
+            0% { opacity: 1; }
+            100% { opacity: 0; transform: scale(1.2); }
+        }
+    </style>
+</head>
+<body>
+    <div class="intro-screen">
+        <button class="skip-intro">تخطي المقدمة</button>
+        <div class="logo-container">
+            <div class="logo" id="typed-logo"></div>
+        </div>
+        <div class="keyhole-container">
+            <img src="https://i.imgur.com/JnQ9JFy.png" class="key" alt="Key">
+            <div class="keyhole"></div>
+        </div>
+    </div>
+    
+    <main class="website-content">
+        <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">مرحبًا بك في AffairED</h1>
+        <p style="font-size: 1.2rem; opacity: 0.8;">نظام إدارة الأعمال المتكامل</p>
+        <div style="margin-top: 2rem;">
+            <button style="background: linear-gradient(90deg, #00dbde 0%, #fc00ff 100%); 
+                        border: none; 
+                        padding: 12px 30px; 
+                        border-radius: 30px; 
+                        color: white; 
+                        font-size: 1.1rem; 
+                        cursor: pointer;">
+                بدء الاستخدام
+            </button>
+        </div>
+    </main>
+
+    <script>
+        // Typewriter Effect for Logo
+        const typed = new Typed('#typed-logo', {
+            strings: ["AffairED"],
+            typeSpeed: 150,
+            showCursor: true,
+            cursorChar: '|',
+            onComplete: startKeyAnimation
+        });
+
+        // Key Unlock Animation
+        function startKeyAnimation() {
+            // حركة نزول المفتاح
+            gsap.to(".key", {
+                y: 50,
+                duration: 1.5,
+                ease: "bounce.out",
+                onComplete: () => {
+                    // دوران المفتاح
+                    gsap.to(".key", {
+                        rotation: 90,
+                        duration: 0.8,
+                        ease: "power2.inOut",
+                        onComplete: unlockDoor
+                    });
+                }
+            });
+        }
+
+        // تأثير فتح القفل
+        function unlockDoor() {
+            // اهتزاز القفل
+            gsap.to(".keyhole", {
+                scale: 1.1,
+                duration: 0.1,
+                yoyo: true,
+                repeat: 5,
+                onComplete: showWebsite
+            });
+            
+            // توهج القفل
+            gsap.to(".keyhole", {
+                borderColor: "rgba(0, 219, 222, 0.8)",
+                duration: 0.5
+            });
+            
+            // توهج المفتاح
+            gsap.to(".key", {
+                filter: "drop-shadow(0 0 10px rgba(252, 0, 255, 0.8))",
+                duration: 0.5
+            });
+        }
+
+        // عرض الصفحة الرئيسية
+        function showWebsite() {
+            gsap.to(".intro-screen", {
+                opacity: 0,
+                duration: 1,
+                onComplete: () => {
+                    document.querySelector(".intro-screen").style.display = "none";
+                    document.querySelector(".website-content").style.display = "block";
+                }
+            });
+        }
+
+        // زر تخطي المقدمة
+        document.querySelector(".skip-intro").addEventListener("click", showWebsite);
+    </script>
+</body>
+</html>
