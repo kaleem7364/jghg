@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AffairED - تجربة فتح الموقع</title>
+    <title>AffairED - واجهة الافتتاح</title>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
     <style>
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Tajawal', Arial, sans-serif;
             background: #0f0f1a;
             overflow: hidden;
             color: white;
@@ -30,57 +31,67 @@
         }
         
         .logo-container {
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
             display: flex;
-            justify-content: center;
-            max-width: 90%;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .logo-text {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #00dbde 0%, #fc00ff 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+            height: 4rem;
         }
         
         .logo-img {
-            max-width: 400px;
-            width: 100%;
-            height: auto;
+            max-width: 300px;
             opacity: 0;
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transform: translateY(20px);
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5));
         }
         
         .keyhole-container {
             position: relative;
-            width: 200px;
-            height: 200px;
+            width: 220px;
+            height: 220px;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 30px;
+            margin-top: 1rem;
         }
         
         .keyhole {
-            width: 80px;
-            height: 80px;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
-            border: 3px solid rgba(255, 255, 255, 0.3);
+            border: 3px solid rgba(255, 255, 255, 0.2);
             position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
         }
         
         .keyhole::after {
             content: '';
             position: absolute;
-            bottom: -40px;
+            bottom: -50px;
             left: 50%;
             transform: translateX(-50%);
-            width: 30px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 0 0 5px 5px;
+            width: 35px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 0 0 8px 8px;
         }
         
         .key {
-            width: 100px;
-            height: auto;
             position: absolute;
-            transform: translateY(-150px);
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5));
+            width: 80px;
+            transform: translateY(-180px);
+            opacity: 0;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.7));
             z-index: 10;
         }
         
@@ -88,37 +99,60 @@
             display: none;
             padding: 2rem;
             text-align: center;
-            animation: fadeIn 1s ease-in-out;
+            animation: fadeIn 1.5s ease-in-out;
         }
         
         .skip-intro {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.1);
+            top: 25px;
+            right: 25px;
+            background: rgba(255, 255, 255, 0.15);
             border: 1px solid rgba(255, 255, 255, 0.3);
             color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
+            padding: 8px 20px;
+            border-radius: 25px;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 1rem;
             transition: all 0.3s;
+            backdrop-filter: blur(5px);
         }
         
         .skip-intro:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.25);
         }
         
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .typed-cursor {
+            opacity: 1;
+            animation: blink 0.7s infinite;
+            font-size: 3.5rem;
+            color: #fc00ff;
+            vertical-align: middle;
+        }
+        
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="intro-screen">
         <button class="skip-intro">تخطي المقدمة</button>
         <div class="logo-container">
+            <div class="logo-text" id="typed-logo"></div>
             <img src="IMG-20250707-WA0014.jpg" class="logo-img" id="logo-image">
         </div>
         <div class="keyhole-container">
@@ -128,72 +162,103 @@
     </div>
     
     <main class="website-content">
-        <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">مرحبًا بك في AffairED</h1>
-        <p style="font-size: 1.2rem; opacity: 0.8;">نظام إدارة الأعمال المتكامل</p>
-        <div style="margin-top: 2rem;">
-            <button style="background: linear-gradient(90deg, #00dbde 0%, #fc00ff 100%); 
-                        border: none; 
-                        padding: 12px 30px; 
-                        border-radius: 30px; 
-                        color: white; 
-                        font-size: 1.1rem; 
-                        cursor: pointer;">
-                بدء الاستخدام
-            </button>
-        </div>
+        <h1 style="font-size: 2.8rem; margin-bottom: 1.5rem; background: linear-gradient(90deg, #00dbde 0%, #fc00ff 100%); -webkit-background-clip: text; background-clip: text; color: transparent;">مرحبًا بك في AffairED</h1>
+        <p style="font-size: 1.3rem; opacity: 0.9; margin-bottom: 2rem;">الحل المتكامل لإدارة أعمالك</p>
+        <button style="background: linear-gradient(90deg, #00dbde 0%, #fc00ff 100%); border: none; padding: 15px 40px; border-radius: 30px; color: white; font-size: 1.2rem; cursor: pointer; transition: transform 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.2);" 
+                onmouseover="this.style.transform='scale(1.05)'" 
+                onmouseout="this.style.transform='scale(1)'">
+            ابدأ الآن
+        </button>
     </main>
 
     <script>
-        // ظهور الصورة التدريجي
-        gsap.to("#logo-image", {
-            opacity: 1,
-            duration: 2,
-            onComplete: startKeyAnimation
+        // 1. تأثير الكتابة للاسم
+        const typed = new Typed('#typed-logo', {
+            strings: ["AffairED"],
+            typeSpeed: 150,
+            startDelay: 300,
+            showCursor: true,
+            cursorChar: '_',
+            onComplete: () => {
+                // 2. ظهور صورة اللوجو بعد الكتابة
+                gsap.to("#logo-image", {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1.2,
+                    ease: "power2.out",
+                    onComplete: showKey
+                });
+            }
         });
 
-        // حركة المفتاح
-        function startKeyAnimation() {
+        // 3. ظهور المفتاح
+        function showKey() {
             gsap.to(".key", {
-                y: 50,
-                duration: 1.5,
-                ease: "bounce.out",
-                onComplete: rotateKey
+                opacity: 1,
+                duration: 0.8,
+                onComplete: startKeyAnimation
             });
         }
 
-        // دوران المفتاح
+        // 4. حركة المفتاح
+        function startKeyAnimation() {
+            // أ. نزول المفتاح
+            gsap.to(".key", {
+                y: 60,
+                duration: 1.8,
+                ease: "bounce.out",
+                onComplete: rotateKey
+            });
+            
+            // ب. توهج القفل
+            gsap.to(".keyhole", {
+                borderColor: "rgba(255, 255, 255, 0.5)",
+                duration: 1.5
+            });
+        }
+
+        // 5. دوران المفتاح
         function rotateKey() {
             gsap.to(".key", {
                 rotation: 90,
-                duration: 0.8,
-                ease: "power2.inOut",
+                duration: 0.9,
+                ease: "elastic.out(1, 0.5)",
                 onComplete: unlockDoor
             });
         }
 
-        // فتح القفل
+        // 6. فتح القفل
         function unlockDoor() {
-            // اهتزاز القفل
+            // أ. اهتزاز القفل
             gsap.to(".keyhole", {
                 scale: 1.1,
-                duration: 0.1,
+                duration: 0.15,
                 yoyo: true,
-                repeat: 5,
-                onComplete: showWebsite
+                repeat: 4,
+                onComplete: () => {
+                    gsap.to(".keyhole", {
+                        borderColor: "rgba(0, 219, 222, 0.8)",
+                        boxShadow: "0 0 25px rgba(0,219,222,0.6)"
+                    });
+                }
             });
             
-            // توهج القفل
-            gsap.to(".keyhole", {
-                borderColor: "rgba(0, 219, 222, 0.8)",
-                duration: 0.5
+            // ب. توهج العناصر
+            gsap.to(".key", {
+                filter: "drop-shadow(0 0 15px rgba(252,0,255,0.9))",
+                duration: 0.8
             });
+            
+            // ج. الانتقال للصفحة
+            setTimeout(showWebsite, 1000);
         }
 
-        // عرض الصفحة الرئيسية
+        // 7. عرض الصفحة الرئيسية
         function showWebsite() {
             gsap.to(".intro-screen", {
                 opacity: 0,
-                duration: 1,
+                duration: 1.2,
+                ease: "power2.inOut",
                 onComplete: () => {
                     document.querySelector(".intro-screen").style.display = "none";
                     document.querySelector(".website-content").style.display = "block";
@@ -205,4 +270,4 @@
         document.querySelector(".skip-intro").addEventListener("click", showWebsite);
     </script>
 </body>
-</html>
+    </html>
